@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_config_settings_view_form" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.gemini</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[hasclass('settings')]" position="inside">
+                <div class="app_settings_block" data-string="Gemini Assistant" string="Gemini Assistant" data-key="odoo_gemini_assistant">
+                    <h2>AI Assistant Odoo</h2>
+                    <div class="row mt16 o_settings_container">
+                        <div class="col-12 col-lg-6 o_setting_box">
+                            <div class="o_setting_left_pane">
+                                <field name="llm_enabled"/>
+                            </div>
+                            <div class="o_setting_right_pane">
+                                <label for="llm_enabled"/>
+                                <div class="text-muted">
+                                    Habilitar el asistente de IA en la interfaz de Odoo
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- LLM Provider Selection -->
+                    <h3 class="mt32">Proveedor de LLM</h3>
+                    <div class="row mt16 o_settings_container">
+                        <div class="col-12 col-lg-6 o_setting_box">
+                            <div class="o_setting_right_pane">
+                                <label for="llm_provider"/>
+                                <field name="llm_provider"/>
+                                <div class="text-muted">
+                                    Selecciona entre Google Gemini u OpenRouter
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Google Gemini Configuration Section -->
+                    <h3 class="mt32">Configuración de Google Gemini</h3>
+                    <div class="row mt16 o_settings_container" attrs="{'invisible': [('llm_provider', '!=', 'google')]}">
+                        <div class="col-12 col-lg-6 o_setting_box">
+                            <div class="o_setting_right_pane">
+                                <label for="gemini_api_key"/>
+                                <field name="gemini_api_key" password="True"/>
+                                <div class="text-muted">
+                                    API Key de Google Gemini (obtener en https://aistudio.google.com/apikey)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-lg-6 o_setting_box">
+                            <div class="o_setting_right_pane">
+                                <label for="gemini_model"/>
+                                <field name="gemini_model"/>
+                                <div class="text-muted">
+                                    Modelo de Gemini a utilizar
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- OpenRouter Configuration Section -->
+                    <h3 class="mt32">Configuración de OpenRouter</h3>
+                    <div class="row mt16 o_settings_container" attrs="{'invisible': [('llm_provider', '!=', 'openrouter')]}">
+                        <div class="col-12 col-lg-6 o_setting_box">
+                            <div class="o_setting_right_pane">
+                                <label for="openrouter_api_key"/>
+                                <field name="openrouter_api_key" password="True"/>
+                                <div class="text-muted">
+                                    API Key de OpenRouter (obtener en https://openrouter.ai/keys)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-lg-6 o_setting_box">
+                            <div class="o_setting_right_pane">
+                                <label for="openrouter_model"/>
+                                <field name="openrouter_model"/>
+                                <div class="text-muted">
+                                    Modelo a utilizar (soporta GPT-4, Claude, Mistral, etc.)
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- AnythingLLM Configuration Section -->
+                    <h3 class="mt32">Integración con AnythingLLM</h3>
+                    <div class="row mt16 o_settings_container">
+                        <div class="col-12 col-lg-6 o_setting_box">
+                            <div class="o_setting_left_pane">
+                                <field name="anythingllm_enabled"/>
+                            </div>
+                            <div class="o_setting_right_pane">
+                                <label for="anythingllm_enabled"/>
+                                <div class="text-muted">
+                                    Usar AnythingLLM para documentación de Odoo
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt16 o_settings_container" attrs="{'invisible': [('anythingllm_enabled', '=', False)]}">
+                        <div class="col-12 col-lg-6 o_setting_box">
+                            <div class="o_setting_right_pane">
+                                <label for="anythingllm_url"/>
+                                <field name="anythingllm_url"/>
+                                <div class="text-muted">
+                                    URL base de AnythingLLM (ej: http://info.knowhub.tech)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-lg-6 o_setting_box">
+                            <div class="o_setting_right_pane">
+                                <label for="anythingllm_api_key"/>
+                                <field name="anythingllm_api_key" password="True"/>
+                                <div class="text-muted">
+                                    API Key de AnythingLLM
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt16 o_settings_container" attrs="{'invisible': [('anythingllm_enabled', '=', False)]}">
+                        <div class="col-12 col-lg-12 o_setting_box">
+                            <div class="o_setting_right_pane">
+                                <label for="anythingllm_workspace"/>
+                                <field name="anythingllm_workspace"/>
+                                <div class="text-muted">
+                                    Nombre del workspace especializado en Odoo (ej: Odoo17)
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Web Search Configuration Section -->
+                    <h3 class="mt32">Búsqueda Web</h3>
+                    <div class="row mt16 o_settings_container">
+                        <div class="col-12 col-lg-6 o_setting_box">
+                            <div class="o_setting_left_pane">
+                                <field name="web_search_enabled"/>
+                            </div>
+                            <div class="o_setting_right_pane">
+                                <label for="web_search_enabled"/>
+                                <div class="text-muted">
+                                    Habilitar búsqueda web cuando AnythingLLM no tenga respuesta
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Voice Configuration Section -->
+                    <h3 class="mt32">Configuración de Voz</h3>
+                    <div class="row mt16 o_settings_container">
+                        <div class="col-12 col-lg-6 o_setting_box">
+                            <div class="o_setting_right_pane">
+                                <label for="vosk_model_path"/>
+                                <field name="vosk_model_path"/>
+                                <div class="text-muted">
+                                    Ruta al modelo Vosk (ej: /opt/vosk/vosk-model-small-es-0.22)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-lg-6 o_setting_box">
+                            <div class="o_setting_right_pane">
+                                <label for="tts_voice"/>
+                                <field name="tts_voice"/>
+                                <div class="text-muted">
+                                    Voz para edge-tts (ej: es-ES-AlvaroNeural, es-MX-DaliaNeural)
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+    <menuitem id="menu_gemini_config"
+              name="Gemini Assistant"
+              parent="base.menu_administration"
+              sequence="100"/>
+
+    <record id="action_gemini_config" model="ir.actions.act_window">
+        <field name="name">Configuración del Asistente</field>
+        <field name="res_model">res.config.settings</field>
+        <field name="view_mode">form</field>
+        <field name="target">inline</field>
+        <field name="context">{'module': 'odoo_gemini_assistant'}</field>
+    </record>
+
+    <menuitem id="menu_gemini_settings"
+              name="Configuración"
+              parent="menu_gemini_config"
+              action="action_gemini_config"
+              sequence="10"/>
+</odoo>

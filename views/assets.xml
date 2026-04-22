@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="assets_backend" inherit_id="web.assets_backend">
+        <xpath expr="." position="inside">
+            <script type="text/javascript" src="/odoo_gemini_assistant/static/src/js/chat_widget.js"/>
+            <link rel="stylesheet" href="/odoo_gemini_assistant/static/src/scss/chat_widget.scss"/>
+        </xpath>
+    </template>
+</odoo>

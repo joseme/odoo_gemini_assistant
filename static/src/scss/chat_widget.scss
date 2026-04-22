@@ -1,0 +1,328 @@
+$gemini-primary: #7c3aed;
+$gemini-primary-dark: #6d28d9;
+$gemini-bg: #1e1b4b;
+$gemini-user-bubble: #7c3aed;
+$gemini-assistant-bubble: #374151;
+$gemini-text: #f9fafb;
+$gemini-text-muted: #9ca3af;
+$gemini-border: #4b5563;
+$gemini-input-bg: #1f2937;
+$gemini-width: 380px;
+$gemini-height: 520px;
+
+.gemini-widget {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    z-index: 9999;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+
+    .gemini-toggle-btn {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        background: $gemini-primary;
+        border: none;
+        color: white;
+        font-size: 24px;
+        cursor: pointer;
+        box-shadow: 0 4px 14px rgba(124, 58, 237, 0.4);
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        &:hover {
+            background: $gemini-primary-dark;
+            transform: scale(1.05);
+        }
+
+        &.open {
+            opacity: 0;
+            pointer-events: none;
+        }
+    }
+
+    .gemini-chat-panel {
+        width: $gemini-width;
+        height: $gemini-height;
+        background: $gemini-bg;
+        border-radius: 16px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        animation: slideUp 0.3s ease;
+
+        @media (max-width: 480px) {
+            width: calc(100vw - 32px);
+            height: calc(100vh - 80px);
+            bottom: 16px;
+            right: 16px;
+        }
+    }
+
+    .gemini-chat-header {
+        background: linear-gradient(135deg, $gemini-primary, $gemini-primary-dark);
+        padding: 16px 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        .gemini-header-title {
+            color: white;
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        .gemini-close-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+            padding: 4px;
+            opacity: 0.8;
+
+            &:hover {
+                opacity: 1;
+            }
+        }
+    }
+
+    .gemini-chat-messages {
+        flex: 1;
+        overflow-y: auto;
+        padding: 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        background: $gemini-bg;
+
+        &::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        &::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        &::-webkit-scrollbar-thumb {
+            background: $gemini-border;
+            border-radius: 3px;
+        }
+    }
+
+    .gemini-welcome {
+        text-align: center;
+        color: $gemini-text-muted;
+        padding: 32px 16px;
+        font-size: 14px;
+        line-height: 1.5;
+    }
+
+    .gemini-message {
+        max-width: 85%;
+        position: relative;
+
+        &.gemini-message-user {
+            align-self: flex-end;
+
+            .gemini-message-content {
+                background: $gemini-user-bubble;
+                color: white;
+                border-bottom-right-radius: 4px;
+            }
+        }
+
+        &.gemini-message-assistant {
+            align-self: flex-start;
+
+            .gemini-message-content {
+                background: $gemini-assistant-bubble;
+                color: $gemini-text;
+                border-bottom-left-radius: 4px;
+                padding-right: 40px;
+            }
+        }
+
+        .gemini-message-content {
+            padding: 10px 14px;
+            border-radius: 12px;
+            font-size: 14px;
+            line-height: 1.5;
+            word-wrap: break-word;
+
+            code {
+                background: rgba(0, 0, 0, 0.2);
+                padding: 2px 6px;
+                border-radius: 4px;
+                font-family: "Fira Code", monospace;
+                font-size: 13px;
+            }
+
+            strong {
+                font-weight: 600;
+            }
+        }
+
+        .gemini-tts-btn {
+            position: absolute;
+            bottom: 4px;
+            right: 4px;
+            background: none;
+            border: none;
+            color: $gemini-text-muted;
+            cursor: pointer;
+            padding: 6px;
+            font-size: 14px;
+            border-radius: 50%;
+            transition: all 0.2s;
+
+            &:hover {
+                color: white;
+                background: rgba(255, 255, 255, 0.1);
+            }
+
+            &.playing {
+                color: $gemini-primary;
+                animation: pulse 1.5s infinite;
+            }
+        }
+    }
+
+    .gemini-typing {
+        display: flex;
+        gap: 4px;
+        padding: 12px 16px;
+        background: $gemini-assistant-bubble;
+        border-radius: 12px;
+        width: fit-content;
+
+        span {
+            width: 8px;
+            height: 8px;
+            background: $gemini-text-muted;
+            border-radius: 50%;
+            animation: typing 1.4s infinite;
+
+            &:nth-child(2) {
+                animation-delay: 0.2s;
+            }
+
+            &:nth-child(3) {
+                animation-delay: 0.4s;
+            }
+        }
+    }
+
+    .gemini-chat-input {
+        padding: 12px 16px;
+        background: darken($gemini-bg, 3%);
+        border-top: 1px solid $gemini-border;
+        display: flex;
+        align-items: flex-end;
+        gap: 8px;
+
+        .gemini-input {
+            flex: 1;
+            background: $gemini-input-bg;
+            border: 1px solid $gemini-border;
+            border-radius: 20px;
+            padding: 10px 16px;
+            color: $gemini-text;
+            font-size: 14px;
+            resize: none;
+            min-height: 20px;
+            max-height: 80px;
+            line-height: 1.4;
+            font-family: inherit;
+
+            &:focus {
+                outline: none;
+                border-color: $gemini-primary;
+            }
+
+            &::placeholder {
+                color: $gemini-text-muted;
+            }
+        }
+
+        button {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            transition: all 0.2s;
+            flex-shrink: 0;
+
+            &:disabled {
+                opacity: 0.4;
+                cursor: not-allowed;
+            }
+        }
+
+        .gemini-mic-btn {
+            background: $gemini-input-bg;
+            color: $gemini-text-muted;
+            border: 1px solid $gemini-border;
+
+            &:hover:not(.recording) {
+                background: $gemini-border;
+                color: white;
+            }
+
+            &.recording {
+                background: #ef4444;
+                color: white;
+                border-color: #ef4444;
+                animation: pulse 1s infinite;
+            }
+        }
+
+        .gemini-send-btn {
+            background: $gemini-primary;
+            color: white;
+
+            &:hover:not(:disabled) {
+                background: $gemini-primary-dark;
+            }
+        }
+    }
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes typing {
+    0%, 60%, 100% {
+        transform: translateY(0);
+        opacity: 0.4;
+    }
+    30% {
+        transform: translateY(-6px);
+        opacity: 1;
+    }
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+}

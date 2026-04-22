@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="odoo_gemini_assistant.GeminiChatWidget">
+        <div class="gemini-widget">
+            <t t-if="state.isOpen">
+                <div class="gemini-chat-panel">
+                    <div class="gemini-chat-header">
+                        <div class="gemini-header-title">
+                            <span>Asistente Gemini</span>
+                        </div>
+                        <button class="gemini-close-btn" t-on-click="toggleChat">
+                            <i class="fa fa-times"/>
+                        </button>
+                    </div>
+
+                    <div class="gemini-chat-messages" t-ref="chatContainer">
+                        <t t-if="state.messages.length === 0">
+                            <div class="gemini-welcome">
+                                <p>Hola, soy tu asistente de Odoo. Pregúntame lo que necesites.</p>
+                            </div>
+                        </t>
+
+                        <t t-foreach="state.messages" t-as="msg" t-key="msg_index">
+                            <div t-attf-class="gemini-message gemini-message-#{msg.role}">
+                                <div class="gemini-message-content" t-out="formatMessage(msg.content)"/>
+                                <t t-if="msg.role === 'assistant'">
+                                    <button
+                                        t-attf-class="gemini-tts-btn #{state.isPlaying ? 'playing' : ''}"
+                                        t-on-click="() => this.playResponse(msg)"
+                                        title="Escuchar respuesta">
+                                        <i t-attf-class="fa #{state.isPlaying ? 'fa-stop' : 'fa-volume-up'}"/>
+                                    </button>
+                                </t>
+                            </div>
+                        </t>
+
+                        <t t-if="state.isLoading">
+                            <div class="gemini-message gemini-message-assistant">
+                                <div class="gemini-typing">
+                                    <span></span>
+                                    <span></span>
+                                    <span></span>
+                                </div>
+                            </div>
+                        </t>
+                    </div>
+
+                    <div class="gemini-chat-input">
+                        <textarea
+                            class="gemini-input"
+                            t-model="state.inputText"
+                            t-on-keypress="handleKeyPress"
+                            placeholder="Escribe tu pregunta..."
+                            rows="1"/>
+                        <button
+                            t-attf-class="gemini-mic-btn #{state.isRecording ? 'recording' : ''}"
+                            t-on-click="state.isRecording ? stopRecording : startRecording"
+                            title="Grabar voz">
+                            <i class="fa fa-microphone"/>
+                        </button>
+                        <button
+                            class="gemini-send-btn"
+                            t-on-click="sendMessage"
+                            t-att-disabled="state.isLoading || !state.inputText.trim()">
+                            <i class="fa fa-paper-plane"/>
+                        </button>
+                    </div>
+                </div>
+            </t>
+
+            <button
+                class="gemini-toggle-btn"
+                t-on-click="toggleChat"
+                t-att-class="{ 'open': state.isOpen }">
+                <i t-attf-class="fa #{state.isOpen ? 'fa-times' : 'fa-comments'}"/>
+            </button>
+        </div>
+    </t>
+
+</templates>
