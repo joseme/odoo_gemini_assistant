@@ -73,7 +73,7 @@ Ir a **Configuración > Gemini Assistant > Configuración** y completar:
 
 ## Instalación con Docker
 
-### Opción A: Montar modelo como volumen (推荐)
+### Opción A: Montar modelo como volumen
 
 ```yaml
 # docker-compose.yml
